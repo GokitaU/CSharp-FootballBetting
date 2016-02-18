@@ -1,0 +1,500 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:p="clr-namespace:FootballHedge.Properties"
+        
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FootballHedge.MainWindow"
+        xmlns:local="clr-namespace:FootballHedge"
+        Title="Hedge" Height="410" Width="565" ResizeMode="CanMinimize"  Closing="Window_Closing">
+    <Window.Resources>
+        <local:CompareProfitValues x:Key="CompareValues" />
+    </Window.Resources>
+
+    <Grid Margin="0,0,2,0" Name="BackgroundGrid" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+        <Menu HorizontalAlignment="Left" Width="558" Height="19" VerticalAlignment="Top">
+            <Menu.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </Menu.Background>
+            <MenuItem Header="_Main" Margin="0">
+                <MenuItem Header="Start" x:Name="MenuItem_Start" Background="Green" Click="MenuItem_Start_Click" />
+                <MenuItem Header="Options" Click="MenuItem_Options"/>
+                <MenuItem Header="Open Folder" Click="MenuItem_OpenFolder"/>
+                <MenuItem Header="Palce Holder" Click="MenuItem_ClickPlaceHolder"/>
+            </MenuItem>
+            <MenuItem Header="_Data">
+                <MenuItem Header="Save" Click="MenuItem_Save"/>
+                <MenuItem Header="Load" Click="MenuItem_Load"/>
+                <MenuItem Header="Clear All" Click="MenuItem_ClearAll"/>
+                <MenuItem Header="Update Events" Click="MenuItem_UpdateEvents"/>
+                <MenuItem Header="Remove Live" Click="MenuItem_RemoveLiveMatches"/>
+                <MenuItem Header="Save Settings" Click="MenuItem_SaveSettings"/>
+                <MenuItem Header="Load Settings" Click="MenuItem_LoadSettings" />
+
+
+            </MenuItem>
+            <MenuItem  Header="Calc" >
+                <MenuItem Header="Lay" Click="MenuItem_CalcLay"/>
+                <MenuItem Header="Dutch" Click="MenuItem_CalcDutch"/>
+                <MenuItem Header="3Way" Click="MenuItem_Calc3Way"/>
+                <MenuItem Header="FreeBet" Click="MenuItem_FreeBet" />
+                <MenuItem Header="Default Stake">
+                    <TextBox Text="{Binding DefaultStake, Mode=TwoWay, Source={x:Static p:Settings.Default}}"/>
+                </MenuItem>
+                <MenuItem Header="Transparency">
+                    <TextBox Text="{Binding Transparency, Mode=TwoWay, Source={x:Static p:Settings.Default}}"/>
+                </MenuItem>
+
+            </MenuItem>
+            <MenuItem Name="VisibleStatus" Header="Not Workign" Background="Red">
+            </MenuItem>
+        </Menu>
+        <TabControl Name="TabCont" HorizontalAlignment="Left" Height="311" Margin="2,22,0,0" VerticalAlignment="Top" Width="553" Grid.ColumnSpan="2" >
+            
+            <TabItem Header="Hedge">
+                
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <ListView x:Name="LWHedge" FontSize="10" Grid.Row="1">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="FontSize" Value="11"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn  Header="Match" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1"  Margin="-7,0,-6,0">
+                                                <TextBlock FontSize="10" Text="{Binding Match}" Margin="2" >
+                                                    <TextBlock.ToolTip>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Match}"/>
+                                                            <TextBlock Text=" Selection : " />
+                                                            <TextBlock Text="{Binding Team}" />
+                                                        </StackPanel>
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                                
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+
+                                </GridViewColumn>
+                                <GridViewColumn Header="Team" Width="65">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" Text="{Binding Team}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Back" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  TextAlignment="Center" Text="{Binding Back}"  Margin="2"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Lay" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" TextAlignment="Center" Text="{Binding Lay}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="P/L" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+     
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock Name="ProfitValue" FontSize="10"  TextAlignment="Center" Text="{Binding PL}" Margin="2"  />
+                                            </Border>
+
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding PL, Converter={StaticResource CompareValues}}" Value="2"  >
+                                                    <Setter TargetName="ProfitValue" Property="Background" Value="Lime" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PL, Converter={StaticResource CompareValues}}" Value="1"  >
+                                                    <Setter TargetName="ProfitValue" Property="Background" Value="Green" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PL, Converter={StaticResource CompareValues}}" Value="0" >
+                                                    <Setter TargetName="ProfitValue" Property="Background" Value="Orange" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PL, Converter={StaticResource CompareValues}}" Value="-1" >
+                                                    <Setter TargetName="ProfitValue" Property="Background" Value="Red" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                        
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Size" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock Name="HandicapOffer" FontSize="10" TextAlignment="Center" Text="{Binding Size}" Margin="2"  />
+                                            </Border>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Size}" Value="-1"  >
+                                                    <Setter TargetName="HandicapOffer" Property="Background" Value="DarkGray" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+
+                                <GridViewColumn Header="League" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" ToolTip="{Binding FullLeague}" Text="{Binding League}" TextAlignment="Center" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Bookie" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" ToolTip="{Binding Bookie}"  Text="{Binding Bookie}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Time" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  ToolTip="{Binding Time}" Text="{Binding Time}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Lup" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" ToolTip="{Binding LastUpdate}"  Text="{Binding LastUpdate}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                            </GridView>
+                            
+                        </ListView.View>
+
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Lay Calc" Click="MenuItem_Click_CalcLay"/>
+                                <MenuItem Header="Dutch Calc" Click="MenuItem_Click_CalcDutch"/>
+                                <MenuItem Header="FreeBet Cacl" Click="MenuItem_Click_CalcFreeBet"/>
+                                <MenuItem Header="Compare" Click="MenuItem_Click_Compare"/>
+                                <MenuItem Header="Clear Item" Click="MenuItem_Click_ClearItem"/>
+                                <MenuItem Header="Suspend Item" Click="MenuItem_Click_SuspendItem"/>
+                                <MenuItem Header="Remove Item" Click="MenuItem_Click_Removeitem"/>
+                                <MenuItem Header="Refresh" Click="MenuItem_Click_Refresh"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                    <ComboBox Name="ComboboxActiveBookies" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="150" Height="22"/>
+                    <CheckBox Name="CheckBoxToday" Content="Today" HorizontalAlignment="Left" Margin="180,10,0,0" VerticalAlignment="Top"  Checked="CheckBoxToday_Checked" Unchecked="CheckBoxToday_Checked"/>
+                    <CheckBox Name="CheckBoxLog" Content="Log?" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top"  IsChecked="{Binding WriteLog, Mode=TwoWay, Source={x:Static p:Settings.Default}}"/>
+
+                    <CheckBox Name="CheckBoxViewAll" Content="View All" HorizontalAlignment="Right" Margin="0,0,40,0" FlowDirection="RightToLeft" Checked="CheckBoxToday_Checked" Unchecked="CheckBoxToday_Checked"  VerticalAlignment="Center"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Data">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="LWData" FontSize="10" Grid.Row="1">
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="FontSize" Value="11"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn  Header="Team1" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1"  Margin="-7,0,-6,0">
+                                                <TextBlock FontSize="10" TextAlignment="Center" Text="{Binding Team1}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+
+                                </GridViewColumn>
+                                <GridViewColumn Header="Team2" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" TextAlignment="Center"  Text="{Binding Team2}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="1" Width="60">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  TextAlignment="Center" Text="{Binding X1}"  Margin="2"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="X" Width="55">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" TextAlignment="Center" Text="{Binding X0}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="2" Width="55">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  TextAlignment="Center" Text="{Binding X2}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="League" Width="55">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" ToolTip="{Binding FullLeague}"  TextAlignment="Center" Text="{Binding League}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+
+                                <GridViewColumn Header="Time" Width="50">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" ToolTip="{Binding Time}" Text="{Binding Time}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="LastUp" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" ToolTip="{Binding LastUpdate}"  Text="{Binding LastUpdate}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Match" Width="25">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  Text="{Binding Match}" Margin="2"  />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Header="Update Teams" Click="LWDataContextMenu_UpdateTeams"/>
+                                <MenuItem Header="Clear Selected" Click="LWDataContextMenu_ClearSelected"/>
+                                <MenuItem Header="Remove Selected" Click="LWDataContextMenu_RemoveSelected"/>
+                                <MenuItem Header="Refresh" Click="LWDataContextMenu_Refresh"/>
+                                <MenuItem Header="Suspend Item" Click="LWDataContextMenu_SuspendItem"/>
+                                <MenuItem Header="Clear All" Click="LWDataContextMenu_ClearAll"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                    <ComboBox Name="ComboBoxBookies" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="150" Height="22"  />
+                    <ComboBox Name="ComboBoxEvents" HorizontalAlignment="Left" Margin="164,7,0,0" VerticalAlignment="Top" Width="190" Height="22" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="3Way">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="240"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="LW3Way" FontSize="10" Grid.Row="0" Margin="0,0,0,1">
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="FontSize" Value="11"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn  Header="Match" Width="140">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1"  Margin="-7,0,-6,0">
+                                                <TextBlock FontSize="10" TextAlignment="Left" Text="{Binding Match}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="League" Width="50">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  Text="{Binding League}" Margin="2"  />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Bookie" Width="50">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" TextAlignment="Left"  Text="{Binding Bookie1}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="1" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  TextAlignment="Center" Text="{Binding X1}"  Margin="2"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Bookie" Width="50">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10" TextAlignment="Left" Text="{Binding Bookie0}" Margin="2" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="0" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  TextAlignment="Center" Text="{Binding X0}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Bookie" Width="50">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  TextAlignment="Left" Text="{Binding Bookie2}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+
+                                <GridViewColumn Header="2" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"   Text="{Binding X2}" Margin="2"  />
+                                            </Border>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Profit" Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border  BorderBrush="LightGray" BorderThickness="1,1,1,1" Margin="-7,0,-6,0" >
+                                                <TextBlock FontSize="10"  Text="{Binding Profit}" Margin="2"  />
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+
+                            </GridView>
+                        </ListView.View>
+
+                    </ListView>
+                    <Button Content="CC" HorizontalAlignment="Left" Margin="5" Height="25" Grid.Row="1" VerticalAlignment="Bottom" Width="50" Click="Button_Click_Calc3WayDutch"/>
+                    <Button Content="Send Mail" HorizontalAlignment="Center" Grid.Row="1" Height="25" Margin="5" VerticalAlignment="Bottom"  Width="60" Click="Button_Click_SendMail"/>
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+        <CheckBox IsChecked="{Binding Source={x:Static p:Settings.Default},Path=MailAllow,Mode=TwoWay}" Name="AllowMails" Content="Enable Emails" HorizontalAlignment="Left" Margin="465,28,0,0" VerticalAlignment="Top" Height="13" Width="82" Checked="AllowMails_Checked" Unchecked="AllowMails_Checked"/>
+        <TextBlock x:Name="LabelError" HorizontalAlignment="Left" Margin="10,358,0,0" VerticalAlignment="Top" Height="20" Width="475" Text="..." MouseRightButtonDown="LabelError_MouseRightButtonDown"  />
+        <TextBlock x:Name="LabelLastBookie" Text="..." HorizontalAlignment="Left" Margin="10,338,0,0" VerticalAlignment="Top" Height="20" Width="198" RenderTransformOrigin="-0.204,-0.065"/>
+        <Button  Click="CalcHedge_ButtonClick" Content="Calc" HorizontalAlignment="Left" Height="24" Margin="496,338,0,0" VerticalAlignment="Top" Width="51"/>
+        <TextBlock Name="MatchbookLastUpdate" HorizontalAlignment="Left" Margin="225,338,0,0" TextWrapping="Wrap" Text="..." VerticalAlignment="Top" Height="20" Width="196"/>
+        <TextBlock Name="EmailStatus" HorizontalAlignment="Left" Margin="376,28,0,0"  VerticalAlignment="Top" >
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static p:Settings.Default},Path=MailAllow}" Value="True">
+                            <Setter Property="Text" Value="Emails: Enabled"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source={x:Static p:Settings.Default},Path=MailAllow}" Value="False">
+                            <Setter Property="Text" Value="Emails: Disabled" />
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                </Style>
+
+            </TextBlock.Style>
+
+        </TextBlock>
+        <Button HorizontalAlignment="Right" Background="Gray" Height="10" Margin="5,5" VerticalAlignment="Top" Width="10" Click="Button_Click_TopMost"/>
+
+
+
+    </Grid>
+</Window>

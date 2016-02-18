@@ -1,0 +1,263 @@
+﻿<Window x:Class="FootballHedge.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:FootballHedge.Properties"
+        Title="Settings" Height="400" Width="500" ResizeMode="NoResize" Closing="Window_Closing">
+    
+    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" >
+        <Grid.Resources>
+            <Style TargetType="Expander">
+                <Setter Property="BorderBrush" Value="DarkGray"/>
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+            
+        </Grid.Resources>
+        <Button Content="Ok" HorizontalAlignment="Right" Margin="7" Height="25"  VerticalAlignment="Bottom" Width="50" Click="CloseSettingsWindow_Button" />
+
+        <StackPanel  Name="StackPanelForExpanders" Margin="0,2,0,40" Grid.Row="1" >
+            <Expander BorderBrush="DarkGray" BorderThickness="1"  IsExpanded=" true" Header="Settings" Margin="5"  VerticalAlignment="Top" HorizontalAlignment="Stretch" Expanded="ExpandeHeader"  >
+                <Grid Margin="25,5,5,5"  Name="PanelBasicSettings" VerticalAlignment="Stretch" Height="40" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox HorizontalAlignment="Center" TextAlignment="Center" FontSize="14" VerticalContentAlignment="Center" Height="25" Margin="80,0,0,0" TextWrapping="Wrap" Text="{Binding plLimit, Mode=TwoWay, Source={x:Static p:Settings.Default}}" VerticalAlignment="Center" Width="48" KeyDown="tb_KeyDown" Grid.Row="0" />
+                    <Label Content="Profit / Loss Limit:"  Height="24" VerticalAlignment="Center" Margin="0,0,80,0" HorizontalAlignment="Center"   />
+
+                    <Button Content="..." HorizontalAlignment="Left" Height="13" VerticalAlignment="Center" Width="20" Click="ButtonChangeDir_Click" Grid.Column="1" Margin="10,15,0,0"/>
+                    <CheckBox x:Name="Dir1" IsChecked="{Binding Dir1, Mode=TwoWay, Source={x:Static p:Settings.Default}}" Content="{Binding Dir1Path, Mode=TwoWay, Source={x:Static p:Settings.Default}}" Tag="1" HorizontalAlignment="Left" Margin="40,0,0,15" VerticalAlignment="Center"  Width="150" Grid.Column="1"/>
+                    <CheckBox x:Name="Dir2" IsChecked="{Binding Dir2, Mode=TwoWay, Source={x:Static p:Settings.Default}}" Content="{Binding Dir2Path, Mode=TwoWay, Source={x:Static p:Settings.Default}}" Tag="2" HorizontalAlignment="Left" Margin="40,15,0,0" VerticalAlignment="Center"  Width="150" Grid.Column="1"/>
+                </Grid>
+            </Expander>
+       
+            <Expander  IsExpanded=" false" Header="Bookmakers Selection" Margin="5"  VerticalAlignment="Top" HorizontalAlignment="Stretch" Expanded="ExpandeHeader"  >
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
+                    
+                <WrapPanel Margin="25,5,5,5"  Name="PanelBookMakersSelect" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  >
+                    
+                    <StackPanel HorizontalAlignment="Stretch" Height="50">
+                        
+                        <Grid HorizontalAlignment="Stretch" Height="50">
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0">
+                                <Label Content="Name"  HorizontalAlignment="Center" />
+                            </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="1">
+                                <Label Content="In Use" HorizontalAlignment="Center" />
+                            </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="2">
+                                <Label Content="Koef Limit"  HorizontalAlignment="Center" />
+                            </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="3">
+                                <Label Content="Email"  HorizontalAlignment="Center" />
+                            </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="4">
+                                <Label Content="P/L Email"  HorizontalAlignment="Center" />
+                            </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="5">
+                                <Label Content="3 Way Dutch" HorizontalAlignment="Center" />
+                            </Border>
+
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="0">
+                                    <Label Content="Select All" VerticalAlignment="Center"/>
+                                </Border>
+                               
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="1">
+                                    <CheckBox Tag="1" VerticalAlignment="Center" HorizontalAlignment="Center" Unchecked="CheckBox_InUse" Checked="CheckBox_InUse" />
+                            </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="2"/>
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="3">
+                                    <CheckBox Tag="2" VerticalAlignment="Center" HorizontalAlignment="Center" Unchecked="CheckBox_InUse" Checked="CheckBox_InUse" />
+                                </Border>
+                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="4"/>
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="5">
+                                    <CheckBox Tag="3" VerticalAlignment="Center" HorizontalAlignment="Center" Unchecked="CheckBox_InUse" Checked="CheckBox_InUse" />
+                                </Border>
+                                    
+                            </Grid>
+                    </StackPanel>
+                    <StackPanel>
+                              <ItemsControl Name="BookmakersSelection">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="50"/>
+                                                    <ColumnDefinition Width="70"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="90"/>
+                                                </Grid.ColumnDefinitions>
+                                            
+                                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="0">
+                                                    <Label HorizontalAlignment="Left" Content="{Binding Name}" />
+                                                </Border>
+                                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="1">
+                                                    <CheckBox IsChecked="{Binding InUse}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="2">
+                                                    <TextBox HorizontalAlignment="Center" TextAlignment="Center" Height="20" IsEnabled="{Binding InUse}"  Text="{Binding Limit}"  VerticalAlignment="Center" Width="48" KeyDown="tb_KeyDown" />
+                                                </Border>
+
+                                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="3">
+                                                    <CheckBox IsChecked="{Binding EMailing}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="4">
+                                                    <TextBox HorizontalAlignment="Center" TextAlignment="Center" Height="20"  IsEnabled="{Binding EMailing}" Text="{Binding PLlimit}" VerticalAlignment="Center" Width="48" KeyDown="tb_KeyDown" />
+                                                </Border>
+                                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="5">
+                                                    <CheckBox IsChecked="{Binding Dutch3Way}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        
+                    </StackPanel>
+                </WrapPanel>
+                    
+                </ScrollViewer>
+            </Expander>
+            <Expander  Header="Email Settings" HorizontalAlignment="Stretch" Margin="5"  VerticalAlignment="Top" Expanded="ExpandeHeader" >
+                <StackPanel Margin="25,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal" Height="90">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                    
+                        <CheckBox Name="CheckboxSingleEmails" IsChecked="{Binding Source={x:Static p:Settings.Default},Path=MailAllowSingle, Mode=TwoWay}" Content="Single E-Mails" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Row="0" />
+                        <CheckBox Name="CheckboxRepeat" Content="Repeat?" IsChecked="{Binding Source={x:Static p:Settings.Default},Path=MailRepeat, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Row="1"/>
+                        <CheckBox Name="CheckboxToday" IsChecked="{Binding Source={x:Static p:Settings.Default},Path=MailOnlyToday, Mode=TwoWay}" Content="Only Today Events" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Row="2" />
+                        <Label Content="Email Address:" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="TextboxEmailTo" Text="{Binding Source={x:Static p:Settings.Default},Path=MailTo,Mode=TwoWay}" Margin="5,0,0,0" FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="25" VerticalAlignment="Center" Width="190" Grid.Column="2" />
+                        <Label Content="P/L Limit:" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Text="{Binding Source={x:Static p:Settings.Default},Path=MailplLimit,Mode=TwoWay}" HorizontalContentAlignment="Center" FontSize="16" HorizontalAlignment="Left" Margin="5,0,0,0" Height="25" KeyDown="tb_KeyDown" VerticalAlignment="Center" Width="60" Grid.Row="2" Grid.Column="2"/>
+                        <Label Content="Interval (min):" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="TextBoxTimer" Text="{Binding Source={x:Static p:Settings.Default},Path=MailRepeatTimer,Mode=TwoWay}" HorizontalAlignment="Left" HorizontalContentAlignment="Center" FontSize="16" Height="25" Margin="5,0,0,0" VerticalAlignment="Center" Width="60" KeyDown="TextBoxTimer_KeyDown" Grid.Row="1" Grid.Column="2"/>
+                        <Button Content="Send Sample" HorizontalAlignment="Right" Height="25" VerticalAlignment="Center" Width="78" Click="Click_SendEmail" Grid.Row="2" Grid.Column="2"/>
+                    </Grid>
+                </StackPanel>
+            </Expander>
+                <Expander  Header="Leagues Selection" HorizontalAlignment="Stretch" Margin="5"  VerticalAlignment="Top" Expanded="ExpandeHeader" >
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
+                    <WrapPanel Margin="25,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <StackPanel HorizontalAlignment="Stretch" Height="50">
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0">
+                                    <Label Content="Name"  HorizontalAlignment="Center" />
+                                </Border>
+                                <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="1">
+                                    <Label Content="State" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="0">
+                                    <Label Content="Select All" HorizontalAlignment="Left" />
+                                </Border>
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="1">
+                                    <CheckBox IsChecked="false" HorizontalAlignment="Center" VerticalAlignment="Center"  Grid.Column="0" Checked="cbBookies_CheckAll" Unchecked="cbBookies_CheckAll"/>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel >
+                            <ItemsControl Name="SelectedLeagues">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0">
+                                                <Label Content="{Binding Name}"  HorizontalAlignment="Left" />
+                                            </Border>
+                                            <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="1">
+                                                <CheckBox IsChecked="{Binding State, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="cbLeagues_Checked" Unchecked="cbLeagues_Checked" />
+                                            </Border>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </WrapPanel>
+
+                </ScrollViewer>
+            </Expander>
+            <Expander  IsExpanded="false" Header="Suspended Matches" Margin="5"  VerticalAlignment="Top" HorizontalAlignment="Stretch" Expanded="ExpandeHeader"  >
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
+                    <WrapPanel Margin="25,5,5,5"  VerticalAlignment="Stretch" HorizontalAlignment="Center"  Orientation="Vertical">
+
+                            <StackPanel HorizontalAlignment="Stretch" Height="50">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="300"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25"/>
+                                        <RowDefinition Height="25"/>
+                                    </Grid.RowDefinitions>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0">
+                                        <Label Content="Match"  HorizontalAlignment="Center" />
+                                    </Border>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1"  Grid.Column="1"/>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="0">
+                                        <Label Content="Remove" HorizontalAlignment="Left" />
+                                    </Border>
+                                <Button Content="All" Width="50" Height="20" Margin="0,0,10,0" HorizontalAlignment="Right" Grid.Row="1" Click="SuspendedMatches_ClickRemoveAll"/>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"  Grid.Column="1">   
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        <StackPanel>
+                            <ItemsControl Name="SuspendedMatches">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Border BorderBrush="DarkGray" BorderThickness="1" >
+                                                <Label Content="{Binding}" />
+                                            </Border>
+                                            <Button Content="Remove" Height="20" Width="50" HorizontalAlignment="Right" Tag="{Binding}" Margin="0,0,10,0" Click="SuspendedMatches_ClickRemoveItem"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                        
+                    </WrapPanel>
+                </ScrollViewer>
+            </Expander>
+        </StackPanel>
+    </Grid>
+</Window>
